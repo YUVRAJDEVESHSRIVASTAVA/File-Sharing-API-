@@ -1,3 +1,68 @@
+# File Sharing API
+
+Simple Django app for sharing files via expiring, tokenized links.
+
+Features
+- Upload files and generate a secure, single-use share link with expiration.
+- Claim and download flow (recipient claims a file; sender is notified).
+- Server-side upload validation (size + allowed extensions).
+- Management command `expire_links` to cleanup expired links and delete orphaned files.
+- Scheduled cleanup via GitHub Actions (cron) or host cron jobs.
+
+Quick start (development)
+
+Prerequisites
+- Python 3.11
+- Git
+
+Local setup (Windows PowerShell)
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
+# open http://127.0.0.1:8000 to use the app
+```
+
+Run tests
+
+```powershell
+.venv\Scripts\Activate.ps1
+python manage.py test
+```
+
+Configuration / environment
+- `SECRET_KEY` — Django secret (set in production).
+- `DEBUG` — `True` for local dev, `False` in production.
+- `SITE_URL` — Public site URL used to build share links (e.g., https://example.com). If not set, links are generated from request.
+- Email settings: by default the project uses the console email backend. Configure SMTP in `fileshare_project/settings.py` for production.
+
+Deployment notes
+- The repo includes a suggested `Procfile` and `gunicorn` + `whitenoise` setup for simple deployments (e.g., Render).
+- For quick public exposure during development we used a Cloudflare Tunnel (cloudflared). See `docs/cloudflared-install.md` and `docs/cloudflare-dns.md`.
+
+CI
+- A GitHub Actions workflow `./.github/workflows/python-tests.yml` runs tests on push and PRs to `main`.
+- The repository also contains a scheduled workflow that runs the `expire_links` management command every 10 minutes to cleanup expired links.
+
+Security & production
+- Do NOT commit secrets. Use environment variables or your host's secret store for `SECRET_KEY`, SMTP credentials, and DB credentials.
+- In production consider moving files to cloud object storage (S3/GCS/Azure Blob) with signed URLs instead of serving from the web server.
+
+Files of interest
+- `sharing/` — app code (models, views, forms, templates).
+- `sharing/management/commands/expire_links.py` — cleanup job.
+- `.github/workflows/` — CI and scheduled jobs.
+- `docs/` — documentation and deployment notes.
+
+Contributing
+- Fork, create a feature branch, add tests for new behavior, and open a PR. Tests must pass on CI.
+
+License
+- MIT (see LICENSE).
 # FileShare Django Demo
 
 Quick start (development):

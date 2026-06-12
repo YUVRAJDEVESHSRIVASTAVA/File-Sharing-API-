@@ -30,3 +30,15 @@ staticfiles/
 # Environment variables
 .env
 cloudflared.exe
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+
+# Python packaging
+pip-wheel-metadata/
+*.egg-info/
