@@ -29,3 +29,4 @@ staticfiles/
 
 # Environment variables
 .env
+cloudflared.exe
