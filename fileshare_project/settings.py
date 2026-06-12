@@ -118,3 +118,16 @@ DEFAULT_FROM_EMAIL = 'no-reply@fileshare.local'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Upload validation defaults
+# Maximum upload size in bytes (default 50 MB). Can be overridden with env var MAX_UPLOAD_SIZE.
+MAX_UPLOAD_SIZE = int(os.environ.get('MAX_UPLOAD_SIZE', 50 * 1024 * 1024))
+
+# Allowed upload file extensions (lowercase, include leading dot). Can be overridden
+# by setting ALLOWED_UPLOAD_EXTENSIONS environment variable to a comma-separated list.
+_env_allowed = os.environ.get('ALLOWED_UPLOAD_EXTENSIONS')
+if _env_allowed:
+    ALLOWED_UPLOAD_EXTENSIONS = [e.strip().lower() for e in _env_allowed.split(',') if e.strip()]
+else:
+    ALLOWED_UPLOAD_EXTENSIONS = ['.pdf', '.txt', '.png', '.jpg', '.jpeg', '.zip', '.rar', '.doc', '.docx', '.xlsx']
+
