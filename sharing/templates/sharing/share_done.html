@@ -10,7 +10,11 @@
         <p class="small text-muted">This link will expire at {{ share.expires_at }} (UTC)</p>
         <div class="input-group">
           <input type="text" class="form-control" id="shareLink" value="{{ link }}" readonly>
-          <button class="btn btn-outline-secondary" onclick="navigator.clipboard.writeText(document.getElementById('shareLink').value)">Copy</button>
+          <button class="btn btn-outline-secondary" id="copyLinkBtn">Copy</button>
+        </div>
+        <div class="mt-2">
+          <p class="small text-muted">This link will expire at {{ share.expires_at }} (UTC)</p>
+          <p id="expiryTimer" data-expires="{{ share.expires_at|date:'c' }}"></p>
         </div>
       </div>
     </div>
