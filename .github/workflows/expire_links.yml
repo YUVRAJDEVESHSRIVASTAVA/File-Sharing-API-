@@ -1,0 +1,46 @@
+name: Expire Share Links
+
+on:
+  schedule:
+    - cron: '*/10 * * * *' # every 10 minutes
+  workflow_dispatch:
+
+jobs:
+  expire-links:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: expire-links
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run migrations
+        env:
+          DJANGO_SETTINGS_MODULE: fileshare_project.settings
+        run: |
+          python manage.py migrate --noinput
+
+      - name: Run expire_links command
+        env:
+          DJANGO_SETTINGS_MODULE: fileshare_project.settings
+        run: |
+          python manage.py expire_links
