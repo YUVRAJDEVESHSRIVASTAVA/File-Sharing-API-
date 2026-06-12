@@ -12,6 +12,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# Public site URL used to build absolute links in emails and shares.
+# Set this to your public domain or tunnel URL (e.g. https://abcd1234.ngrok.io)
+SITE_URL = os.environ.get('SITE_URL', 'http://127.0.0.1:8000')
+
 
 # Application definition
 INSTALLED_APPS = [

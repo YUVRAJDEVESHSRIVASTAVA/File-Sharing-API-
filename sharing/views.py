@@ -5,6 +5,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.conf import settings
 from django.core.mail import send_mail
+from urllib.parse import urljoin
 
 from .forms import ShareForm, DeclineForm
 from .models import UploadedFile, ShareLink
@@ -28,7 +29,12 @@ def index(request):
                 expires_at=expires,
             )
 
-            claim_url = request.build_absolute_uri(reverse('sharing:claim', args=[share.token]))
+            claim_path = reverse('sharing:claim', args=[share.token])
+            site_url = getattr(settings, 'SITE_URL', None)
+            if site_url:
+                claim_url = urljoin(site_url, claim_path)
+            else:
+                claim_url = request.build_absolute_uri(claim_path)
             subject = 'A file was shared with you'
             message = f"{sender} shared a file with you: {uploaded.original_name}\n\nClaim it here: {claim_url}\n\nThis link will expire in 30 minutes."
             send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [recipient])
@@ -41,7 +47,12 @@ def index(request):
 
 def share_done(request, token):
     share = get_object_or_404(ShareLink, token=token)
-    link = request.build_absolute_uri(reverse('sharing:claim', args=[share.token]))
+    claim_path = reverse('sharing:claim', args=[share.token])
+    site_url = getattr(settings, 'SITE_URL', None)
+    if site_url:
+        link = urljoin(site_url, claim_path)
+    else:
+        link = request.build_absolute_uri(claim_path)
     return render(request, 'sharing/share_done.html', {'share': share, 'link': link})
 
 
