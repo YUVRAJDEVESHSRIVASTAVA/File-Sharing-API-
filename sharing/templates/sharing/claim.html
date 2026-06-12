@@ -1,0 +1,21 @@
+{% extends 'sharing/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Claim file</h5>
+        <p><strong>File:</strong> {{ share.file.original_name }}</p>
+        <p><strong>From:</strong> {{ share.sender_email }}</p>
+        <p class="small text-muted">Link expires at {{ share.expires_at }} (UTC)</p>
+        <form method="post">
+          {% csrf_token %}
+          <button class="btn btn-success">Claim & Download</button>
+          <a href="{% url 'sharing:decline' share.token %}" class="btn btn-link">I can't claim</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

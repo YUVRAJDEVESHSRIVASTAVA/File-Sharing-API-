@@ -1,0 +1,16 @@
+body {
+  background: #f8fafc;
+}
+.card {
+  border-radius: 12px;
+}
+.navbar-brand {
+  font-weight: 600;
+}
+
+input[type=file] {
+  display: block;
+}
+
+/* small polish */
+.card-title { font-weight: 600; }
