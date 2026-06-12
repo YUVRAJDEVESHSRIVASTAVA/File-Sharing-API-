@@ -28,6 +28,18 @@ Day 7 — Testing & docs
 - Add tests and validate flows (not included in this scaffold but straightforward to add with Django's test client).
 - This document explains where each piece lives and how to run the expiry notification.
 
+Running Tests
+- **Local:** create and activate your virtualenv, install dependencies, then run:
+
+	python -m venv .venv
+	.venv\Scripts\Activate.ps1  # PowerShell on Windows
+	python -m pip install --upgrade pip
+	pip install -r requirements.txt
+	python manage.py migrate
+	python manage.py test
+
+- **CI:** A GitHub Actions workflow `python-tests.yml` (in `.github/workflows/`) runs tests on push and pull requests to `main`. It sets up Python 3.11, installs dependencies, runs migrations, and executes `manage.py test`.
+
 Security and UX notes:
 - Tokens are unguessable (`secrets.token_urlsafe`) and tied to a file record.
 - Files are served only through the claim/download flow — direct access requires knowledge of media URL and path; in production, use private storage or signed URLs.
