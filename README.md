@@ -1,5 +1,9 @@
 # File Sharing API
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Django Tests](https://github.com/YUVRAJDEVESHSRIVASTAVA/File-Sharing-API-/actions/workflows/python-tests.yml/badge.svg)](https://github.com/YUVRAJDEVESHSRIVASTAVA/File-Sharing-API-/actions/workflows/python-tests.yml)
+[![Coverage](https://codecov.io/gh/YUVRAJDEVESHSRIVASTAVA/File-Sharing-API-/branch/main/graph/badge.svg?token=)](https://codecov.io/gh/YUVRAJDEVESHSRIVASTAVA/File-Sharing-API-)
+
 Simple Django app for sharing files via expiring, tokenized links.
 
 Features
@@ -63,6 +67,11 @@ Contributing
 
 License
 - MIT (see LICENSE).
+
+Coverage & Branch Protection
+- Coverage is reported to Codecov via the `coverage.yml` workflow. If your repository is private you should set the `CODECOV_TOKEN` secret in the repository settings (`Settings -> Secrets -> Actions`) to allow uploads.
+- To protect `main`, either configure branch protection rules in GitHub settings or run the manual workflow `Protect main branch` (in the Actions tab) to apply a rule that requires the `Django Tests` and `Coverage` checks and requires one approving review.
+
 # FileShare Django Demo
 
 Quick start (development):
